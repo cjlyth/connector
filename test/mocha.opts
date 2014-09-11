@@ -1,0 +1,6 @@
+--require should
+--require sinon
+--reporter spec
+--ui bdd
+--recursive
+--sort
