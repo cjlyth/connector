@@ -13,5 +13,9 @@
 			"folder_exclude_patterns": ["test", "lib"],
 			"file_exclude_patterns": [".*", "*.sublime-*"]
 		}
-	]
+	],
+	"settings":
+    {
+        "tab_size": 2
+    },
 }
