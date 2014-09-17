@@ -1,2 +1,1 @@
-should = require('should')
-sinon = require('sinon')
+sinon = require('sinon');

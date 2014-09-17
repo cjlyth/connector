@@ -1,9 +1,9 @@
+--require test/support/env
+--require test/support/common
 --reporter spec
 --ui bdd
 --recursive
 --sort
 --slow 20
---require test/support/common
---require test/support/env
 --check-leaks
 --timeout 200

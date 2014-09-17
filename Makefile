@@ -8,6 +8,7 @@ watch-endpoint:
 	@./node_modules/.bin/mocha -c -w --grep OsirisEndpoint
 
 watch:
-	@./node_modules/.bin/mocha -c -w -i --grep osiris
+	@./node_modules/.bin/mocha -c -w
 
+ # -i --grep osiris
 .PHONY: test
