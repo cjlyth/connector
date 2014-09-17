@@ -142,10 +142,13 @@ describe('OsirisService', function() {
           .with.lengthOf(len);
       }));
   });
+
   describe('#firstEndpoint(callback)', function(){
+    this.timeout(200);
     beforeEach(function(){
       this.osirisService = new OsirisService(this.args);
       this.osirisEndpoint = { trySplunkLogin: function () {} };
+      this.osirisService.osirisEndpoints = [this.osirisEndpoint];
     });
 
     it('should be a function'
@@ -154,51 +157,41 @@ describe('OsirisService', function() {
       });
     it('should return self'
       , sinon.test(function(){
-        this.stub(this.osirisService, 'createEndpoints')
-            .yields(null, [this.osirisEndpoint]);
-        var ret = this.osirisService.firstEndpoint();
-        this.clock.tick(this.timeout());
-        this.osirisService.should.equal(ret);
+        this.osirisService.should.equal(this.osirisService.firstEndpoint());
       }));
-
     it('should invoke the callback with (null, OsirisEndpoint) on login'
       , sinon.test(function(){
-        this.mock(this.osirisEndpoint)
-            .expects("trySplunkLogin")
-            .once()
+        var osirisEndpoint = this.osirisEndpoint;
+        this.mock(osirisEndpoint)
+            .expects("trySplunkLogin").once()
             .yields(null, true);
-
-        var createEndpoints = this.stub(this.osirisService, 'createEndpoints');
-            createEndpoints.yields(null, [this.osirisEndpoint]);
-        
         var callback = this.stub();
-        var ret = this.osirisService.firstEndpoint(callback);
+        this.osirisService.firstEndpoint(callback);
         this.clock.tick(this.timeout());
-
-        callback.called.should.equal(true, 'callback was not called');
-        callback.should.have.propertyByPath('lastCall', 'args', '0')
-          .which.is.not.ok;
-        callback.should.have.propertyByPath('lastCall', 'args', '1')
-          .which.is.ok
-          .and.equal(this.osirisEndpoint);
+        callback.should.have.propertyByPath('lastCall', 'args')
+          .which.is.an.Array
+          .and.is.match([null, function(it) { 
+            return it.should.be.ok
+                  .and.equal(osirisEndpoint); 
+          }]);
       }));
-    it('should invoke the callback with an error if no logged in endpoint'
+
+    it('should invoke the callback with (null, OsirisEndpoint) on login fail'
       , sinon.test(function(){
-        this.mock(this.osirisEndpoint)
-            .expects("trySplunkLogin")
-            .once()
+        var osirisEndpoint = this.osirisEndpoint;
+        this.mock(osirisEndpoint)
+            .expects("trySplunkLogin").once()
             .yields(null, false);
-
-        var createEndpoints = this.stub(this.osirisService, 'createEndpoints');
-            createEndpoints.yields(null, [this.osirisEndpoint]);
-
         var callback = this.stub();
-        var ret = this.osirisService.firstEndpoint(callback);
+        this.osirisService.firstEndpoint(callback);
         this.clock.tick(this.timeout());
-
-        callback.called.should.equal(true, 'callback was not called');
-        callback.should.have.propertyByPath('lastCall', 'args', '0')
-          .which.is.ok;
+        callback.should.have.propertyByPath('lastCall', 'args')
+          .which.is.an.Array
+          .and.is.match([function(it) { 
+            return it.should.be.ok
+                  .and.an.instanceOf(String)
+                  .and.is.not.empty; 
+          }, null]);
       }));
   });
 });

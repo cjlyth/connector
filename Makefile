@@ -1,14 +1,32 @@
+REPORTER = spec
+DEBUG = "osiris,OsirisEndpoint,OsirisService"
+
 test:
-	@./node_modules/.bin/mocha
-
-watch-service:
-	@./node_modules/.bin/mocha -c -w --grep OsirisService
-
-watch-endpoint:
-	@./node_modules/.bin/mocha -c -w --grep OsirisEndpoint
+	@NODE_ENV=test DEBUG=${DEBUG} \
+		./node_modules/.bin/mocha \
+		--bail \
+		--reporter $(REPORTER)
 
 watch:
-	@./node_modules/.bin/mocha -c -w
+	@NODE_ENV=test DEBUG=${DEBUG} \
+		./node_modules/.bin/mocha \
+		-c -w \
+		--bail \
+		--reporter $(REPORTER) \
 
- # -i --grep osiris
 .PHONY: test
+
+# test:
+# 	@./node_modules/.bin/mocha
+
+# watch-service:
+# 	@./node_modules/.bin/mocha -c -w --grep OsirisService
+
+# watch-endpoint:
+# 	@./node_modules/.bin/mocha -c -w --grep OsirisEndpoint
+
+# watch:
+# 	@./node_modules/.bin/mocha -c -w
+
+#  # -i --grep osiris
+# .PHONY: test
