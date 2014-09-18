@@ -39,4 +39,7 @@ osirisService.listJobs(function(err, jobList){
 		.mapValues(jobProperties)
 		.value();
 });
-var strQuery = 'search index=twitter  author=TeamRedHack OR author=RedHack_EN OR author=TheRedHAck earliest=1 | dedup id   | rename author as author_handle, name as author_name, tweet_created_at as created_date  | table id,created_date,text,author_handle,author_name,author_image';
+// var strQuery = 'search index=twitter  author=TeamRedHack OR author=RedHack_EN OR author=TheRedHAck earliest=1 | dedup id   | rename author as author_handle, name as author_name, tweet_created_at as created_date  | table id,created_date,text,author_handle,author_name,author_image';
+
+
+
